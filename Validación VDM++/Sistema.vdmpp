@@ -1,0 +1,119 @@
+/**
+  Sistema.
+
+  <p>
+  description
+  </p>
+
+  @version
+  @author
+*/
+-- import from PlagaDetector all;
+class Sistema
+instance variables
+  sensores : set of Sensor := {};
+  detector : PlagaDetector := new PlagaDetector();
+  alertas : set of Alerta := {};
+  
+functions
+  Plaga2String: PlagaDetector`PlagaType -> seq of char
+  Plaga2String(p) ==
+    cases p:
+      <Insecto> -> "Insecto",
+      <Hongo> -> "Hongo",
+      <Virus> -> "Virus"
+    end;
+
+  Int2String: int -> seq of char
+  Int2String(n) ==
+    if n = 0 then "0" 
+    else 
+      let sign = if n < 0 then "-" else "",
+          absN = abs n
+      in
+        sign ^ Int2StringHelper(absN)
+  pre n >= -2147483648 and n <= 2147483647;
+
+  Int2StringHelper: nat -> seq of char  
+  Int2StringHelper(n) ==
+    if n = 0 then "0"  
+    else if n < 10 then [Digit2Char(n)]
+    else 
+      Int2StringHelper(n div 10) ^ 
+      [Digit2Char(n mod 10)];
+
+  Digit2Char: nat -> char
+  Digit2Char(d) ==
+    cases d:
+      1 -> '1',
+      2 -> '2',
+      3 -> '3',
+      4 -> '4',
+      5 -> '5',
+      6 -> '6',
+      7 -> '7',
+      8 -> '8',
+      9 -> '9',
+      others -> '0'
+    end
+  pre d <= 9;
+
+  Real2String: real -> seq of char
+  Real2String(r) ==
+    let intPart = floor(r),
+        fracPart = abs((r - intPart) * 100)
+    in
+      Int2String(intPart) ^ "." ^ 
+      (if fracPart < 10 then "0" else "") ^ 
+      Int2String(floor(fracPart));
+
+operations
+  public addSensor: Sensor ==> ()
+  addSensor(sensor) ==
+  (
+    sensores := sensores union {sensor}
+  );
+  
+  public monitorSensores: () ==> (Sistema * seq of char)
+  monitorSensores() ==
+  (
+    dcl sensorInfo : seq of char := "";
+    for all sensor in set sensores do
+    (
+      sensorInfo := sensorInfo ^ 
+        "Sensor " ^ Int2String(sensor.getId()) ^ 
+        ": " ^ Real2String(sensor.getValue()) ^ "\n"
+    );
+    return mk_(self, sensorInfo)
+  );
+
+
+  public detectarPlagas: nat * PlagaDetector`PlagaType ==> ()
+  detectarPlagas(sensorId, plagaType) ==
+  (
+    detector.detectPlaga(sensorId, plagaType);
+    alertas := alertas union 
+      {new Alerta(
+        sensorId, 
+        <Plaga>, 
+        "Plaga detectada: " ^ Plaga2String(plagaType)
+      )}
+  );
+  
+  public enviarAlertas: () ==> set of seq of char
+  enviarAlertas() ==
+  (
+    dcl mensajesAlerta : set of seq of char := {};
+    for all alerta in set alertas do
+    (
+      mensajesAlerta := mensajesAlerta union {alerta.getMessage()}
+    );
+    return mensajesAlerta
+  );
+  
+  public checkEnvironment: () ==> ()
+  checkEnvironment() ==
+  (
+    skip
+  );
+end Sistema

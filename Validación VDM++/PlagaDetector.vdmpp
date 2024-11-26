@@ -1,0 +1,31 @@
+/**
+  PlagaDetector.
+
+  <p>
+  description
+  </p>
+
+  @version
+  @author
+*/
+
+class PlagaDetector
+types
+  public PlagaType = <Insecto> | <Hongo> | <Virus>;
+instance variables
+  detectedPlagas : map nat1 to PlagaType := {|->};
+  
+operations
+  public detectPlaga: nat1 * PlagaType ==> ()
+  detectPlaga(sensorId, plagaType) ==
+  (
+    detectedPlagas := detectedPlagas munion {sensorId |-> plagaType}
+  );
+  
+  public clearDetection: () ==> ()
+  clearDetection() ==
+  (
+    detectedPlagas := {|->}
+  );
+  
+end PlagaDetector

@@ -1,0 +1,135 @@
+/**
+  Test.
+
+  <p>
+  description
+  </p>
+
+  @version
+  @author
+*/
+
+
+class Test
+instance variables
+  sensor1 : Sensor;
+  sensor2 : Sensor;
+  sensor3 : Sensor;
+  alerta1 : Alerta;
+  alerta2 : Alerta;
+  alerta3 : Alerta;
+  sistema : Sistema;
+  detector : PlagaDetector;
+  sensor4 : Sensor;
+  sensor5 : Sensor;
+  sensor6 : Sensor;
+  sensor7 : Sensor;
+  sensor8 : Sensor;
+  sensor9 : Sensor;
+  sensor10 : Sensor;
+  sensor11 : Sensor;
+  sensor12 : Sensor;
+  sensor13 : Sensor;
+
+operations
+  public run: () ==> Sistema * seq of char
+  run() == 
+    return test();
+
+  public test: () ==> Sistema * seq of char
+  test() == 
+  (
+    sensorTest();
+    alertTest();
+    plagueTest();
+    systemTest();
+    -- sistema := new Sistema();
+    -- sistema.addSensor(sensor1);
+    sistema.checkEnvironment();
+    sistema.detectarPlagas(1, <Insecto>);
+    sistema.detectarPlagas(2, <Hongo>);
+    sistema.detectarPlagas(3, <Virus>);
+    let a = sistema.enviarAlertas() in skip;
+    
+    let resultado1 = sistema.monitorSensores() in
+    (
+      -- sistema.addSensor(sensor2);
+      let resultado2 = sistema.monitorSensores() in
+      (
+        return resultado2
+      )
+    );
+    
+  );
+  
+  public sensorTest: () ==> ()
+  sensorTest() == 
+  (
+    sensor1 := new Sensor(1, <Temperature>, 25.0, 1);
+    let s1t = sensor1.getType() in skip;
+    sensor2 := new Sensor(2, <Temperature>, 30.0, 2);
+    sensor3 := new Sensor();
+    sensor3.updateValue(100, 15);
+    let s3t = sensor3.getTimestamp() in skip;
+
+    -- sensor2.getType();
+  );
+
+  public alertTest: () ==> ()
+  alertTest() ==
+  (
+    alerta1 := new Alerta(1, <Plaga>, "Alerta de plaga");
+    let a1m = alerta1.getMessage() in skip;
+    alerta2 := new Alerta(2, <Enfermedad>, "Alerta de enfermedad");
+    alerta3 := new Alerta(3, <Plaga>, "Alerta de plaga 2");
+    let a3t = alerta3.getType() in skip;
+    let a2i = alerta2.getId() in skip;
+    alerta1.enviarAlerta();
+  );
+
+  public plagueTest: () ==> ()
+  plagueTest() ==
+  (
+    detector := new PlagaDetector();
+    detector.detectPlaga(1, <Insecto>);
+    detector.detectPlaga(2, <Hongo>);
+    detector.detectPlaga(3, <Virus>);
+    detector.clearDetection();
+  );
+
+  public systemTest: () ==> ()
+  systemTest() ==
+  (
+    sistema := new Sistema();
+    
+    
+    sistema.addSensor(sensor1);
+    sistema.addSensor(sensor2);
+    sistema.addSensor(sensor3);
+    sensor4 := new Sensor(4, <Humidity>, 45.0, 4);
+    sensor5 := new Sensor(5, <Humidity>, 50.0, 5);
+    sensor6 := new Sensor(6, <Humidity>, 55.0, 6);
+    sensor7 := new Sensor(7, <Humidity>, 60.0, 7);
+    sensor8 := new Sensor(8, <Humidity>, 65.0, 8);
+    sensor9 := new Sensor(9, <Humidity>, 70.0, 9);
+    sensor10 := new Sensor(10, <Humidity>, 75.0, 10);
+    sensor11 := new Sensor(11, <Humidity>, 80.0, 11);
+    sensor12 := new Sensor(12, <Humidity>, 85.0, 12);
+    sensor13 := new Sensor(13, <Humidity>, 90.0, 13);
+    sistema.addSensor(sensor4);
+    sistema.addSensor(sensor5);
+    sistema.addSensor(sensor6);
+    sistema.addSensor(sensor7);
+    sistema.addSensor(sensor8);
+    sistema.addSensor(sensor9);
+    sistema.addSensor(sensor10);
+    sistema.addSensor(sensor11);
+    sistema.addSensor(sensor12);
+    sistema.addSensor(sensor13);
+    let rs = sistema.monitorSensores() in skip;
+    
+  );
+
+
+
+end Test

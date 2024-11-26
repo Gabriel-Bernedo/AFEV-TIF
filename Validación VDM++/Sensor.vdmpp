@@ -1,0 +1,64 @@
+/**
+  Sensor.
+
+  <p>
+  description
+  </p>
+
+  @version
+  @author
+*/
+
+class Sensor
+types
+  public SensorType = <Temperature> | <SoilMoisture> | <Humidity> | <SolarRadiation>;
+
+instance variables
+  id : nat;
+  type : SensorType;
+  value : real;
+  timestamp : nat;
+
+operations
+  public Sensor: () ==> Sensor
+  Sensor() ==
+  (
+    id := 0;
+    type := <Temperature>;
+    value := 0.0;
+    timestamp := 0;
+    return self
+  );
+
+  public Sensor: nat * SensorType * real * nat ==> Sensor
+  Sensor(newId, newType, newValue, newTimestamp) == 
+  (
+    id := newId;               
+    type := newType;           
+    value := newValue;        
+    timestamp := newTimestamp;
+    return self
+  )
+  pre newId > 0 and newTimestamp >= 0;
+
+  public updateValue: real * nat ==> ()
+  updateValue(newValue, newTimestamp) == 
+  (
+    value := newValue;
+    timestamp := newTimestamp
+  )
+  pre newTimestamp >= timestamp;
+
+  public getId: () ==> nat
+  getId() == return id;
+
+  public getType: () ==> SensorType
+  getType() == return type;
+
+  public getValue: () ==> real
+  getValue() == return value;
+
+  public getTimestamp: () ==> nat
+  getTimestamp() == return timestamp;
+
+end Sensor

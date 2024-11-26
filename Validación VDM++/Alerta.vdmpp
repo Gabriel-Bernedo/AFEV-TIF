@@ -1,0 +1,45 @@
+/**
+  Alerta.
+
+  <p>
+  description
+  </p>
+
+  @version
+  @author
+*/
+-- imports from IO all;
+
+class Alerta
+types
+  public AlertaType = <Plaga> | <Enfermedad>;
+instance variables
+  id : nat1;
+  type : AlertaType;
+  message : seq of char;
+  
+operations
+  public Alerta: nat1 * AlertaType * seq of char ==> Alerta
+  Alerta(newId, newType, newMessage) ==
+  (
+    id := newId;
+    type := newType;
+    message := newMessage
+  );
+  public getId: () ==> nat1
+    getId() == return id;
+
+  public getType: () ==> AlertaType
+  getType() == return type;
+
+  public getMessage: () ==> seq of char
+  getMessage() == return message;
+
+  public enviarAlerta: () ==> ()
+  enviarAlerta() ==
+  (
+    -- IO`print("Enviando alerta: " ^ message ^ "\n")
+    let msg = "Enviando alerta: " ^ message ^ "\n" in skip
+  );
+end Alerta
+
